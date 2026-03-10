@@ -1,0 +1,22 @@
+﻿@page
+@model IndexModel
+
+<h2>Создать игру</h2>
+
+<form method="post" novalidate>
+    <div asp-validation-summary="ModelOnly" style="color:#b00020"></div>
+
+    <label asp-for="Size">Размер поля (3-8)</label>
+    <input asp-for="Size" type="number" min="3" max="8" />
+    <span asp-validation-for="Size" style="color:#b00020"></span>
+
+    <br />
+
+    <label asp-for="WinLength">Длина победной линии</label>
+    <input asp-for="WinLength" type="number" min="3" max="8" />
+    <span asp-validation-for="WinLength" style="color:#b00020"></span>
+
+    <br />
+
+    <button type="submit">Создать</button>
+</form>

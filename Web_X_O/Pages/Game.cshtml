@@ -1,0 +1,72 @@
+@page "{id}"
+
+<h2>Крестики-Нолики</h2>
+
+<div id="status"></div>
+
+<table id="board"></table>
+
+<style>
+    #board {
+        border-collapse: collapse;
+        margin-top: 12px;
+    }
+
+    #board td {
+        width: 56px;
+        height: 56px;
+        border: 1px solid #333;
+        text-align: center;
+        vertical-align: middle;
+        font-size: 30px;
+        cursor: pointer;
+        user-select: none;
+    }
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.0/signalr.min.js"></script>
+
+<script>
+
+    const gameId = location.pathname.split("/").pop();
+
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("/gamehub")
+        .build();
+
+    connection.start().then(() => {
+        connection.invoke("JoinGame", gameId);
+    });
+
+    connection.on("UpdateBoard", (board, player, finished) => {
+        drawBoard(board);
+
+        if (finished) {
+            document.getElementById("status").innerText = "Игра окончена";
+        } else {
+            document.getElementById("status").innerText = player === 1 ? "Ход: X" : "Ход: O";
+        }
+    });
+
+    function drawBoard(board) {
+        const table = document.getElementById("board");
+        table.innerHTML = "";
+
+        for (let i = 0; i < board.length; i++) {
+            const row = table.insertRow();
+
+            for (let j = 0; j < board[i].length; j++) {
+                const cell = row.insertCell();
+
+                cell.innerText =
+                    board[i][j] === 1 ? "X" :
+                    board[i][j] === 2 ? "O" : "";
+
+                cell.onclick = () => {
+                    connection.invoke("MakeMove", gameId, i, j);
+                };
+            }
+        }
+    }
+
+</script>
