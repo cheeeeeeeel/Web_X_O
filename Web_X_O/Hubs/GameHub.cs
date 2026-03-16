@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.SignalR;
 using Web_X_O.Models;
 using Web_X_O.Services;
 
@@ -22,7 +22,8 @@ namespace Web_X_O.Hubs
                 "UpdateBoard",
                 ToClientBoard(game),
                 game.CurrentPlayer,
-                game.IsFinished
+                game.IsFinished,
+                game.IsDraw
             );
         }
 
@@ -36,7 +37,8 @@ namespace Web_X_O.Hubs
                     "UpdateBoard",
                     ToClientBoard(game),
                     game.CurrentPlayer,
-                    game.IsFinished
+                    game.IsFinished,
+                    game.IsDraw
                 );
             }
         }

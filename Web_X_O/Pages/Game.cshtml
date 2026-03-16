@@ -1,6 +1,6 @@
-@page "{id}"
+п»ї@page "{id}"
 
-<h2>Крестики-Нолики</h2>
+<h2>РљСЂРµСЃС‚РёРєРё-РќРѕР»РёРєРё</h2>
 
 <div id="status"></div>
 
@@ -38,13 +38,15 @@
         connection.invoke("JoinGame", gameId);
     });
 
-    connection.on("UpdateBoard", (board, player, finished) => {
+    connection.on("UpdateBoard", (board, player, finished, isDraw) => {
         drawBoard(board);
 
-        if (finished) {
-            document.getElementById("status").innerText = "Игра окончена";
+        if (finished && isDraw) {
+            document.getElementById("status").innerText = "РќРёС‡СЊСЏ";
+        } else if (finished) {
+            document.getElementById("status").innerText = "РРіСЂР° РѕРєРѕРЅС‡РµРЅР°";
         } else {
-            document.getElementById("status").innerText = player === 1 ? "Ход: X" : "Ход: O";
+            document.getElementById("status").innerText = player === 1 ? "РҐРѕРґ: X" : "РҐРѕРґ: O";
         }
     });
 

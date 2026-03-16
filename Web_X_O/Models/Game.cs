@@ -1,4 +1,4 @@
-namespace Web_X_O.Models
+п»їnamespace Web_X_O.Models
 {
     public enum CellState
     {
@@ -20,14 +20,15 @@ namespace Web_X_O.Models
         public CellState CurrentPlayer { get; private set; }
 
         public bool IsFinished { get; private set; }
+        public bool IsDraw { get; private set; }
 
         public Game(int size, int winLength)
         {
             if (size < MinSize || size > MaxSize)
-                throw new ArgumentException($"Размер поля должен быть от {MinSize} до {MaxSize}.");
+                throw new ArgumentException($"Р Р°Р·РјРµСЂ РїРѕР»СЏ РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ РѕС‚ {MinSize} РґРѕ {MaxSize}.");
 
             if (winLength < MinSize || winLength > size)
-                throw new ArgumentException($"Длина победной линии должна быть от {MinSize} до размера поля.");
+                throw new ArgumentException($"Р”Р»РёРЅР° РїРѕР±РµРґРЅРѕР№ Р»РёРЅРёРё РґРѕР»Р¶РЅР° Р±С‹С‚СЊ РѕС‚ {MinSize} РґРѕ СЂР°Р·РјРµСЂР° РїРѕР»СЏ.");
 
             Size = size;
             WinLength = winLength;
@@ -48,9 +49,19 @@ namespace Web_X_O.Models
             Board[row, col] = CurrentPlayer;
 
             if (CheckWin(row, col))
+            {
                 IsFinished = true;
+                IsDraw = false;
+            }
+            else if (IsBoardFull())
+            {
+                IsFinished = true;
+                IsDraw = true;
+            }
             else
+            {
                 SwitchPlayer();
+            }
 
             return true;
         }
@@ -98,6 +109,20 @@ namespace Web_X_O.Models
             }
 
             return count;
+        }
+
+        bool IsBoardFull()
+        {
+            for (var row = 0; row < Size; row++)
+            {
+                for (var col = 0; col < Size; col++)
+                {
+                    if (Board[row, col] == CellState.Empty)
+                        return false;
+                }
+            }
+
+            return true;
         }
     }
 }
